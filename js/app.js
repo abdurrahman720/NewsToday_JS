@@ -37,7 +37,6 @@ const displayNews = async (data) => {
     const newDiv = document.getElementById('news');
     newDiv.innerHTML = ``
     data.forEach(datum => {
-        console.log(datum)
         
     
         const gridDiv = document.createElement('div');
@@ -70,7 +69,7 @@ const displayNews = async (data) => {
                     <i class="fa-regular fa-star"></i>
                     <i class="fa-regular fa-star"></i>
                    </div>
-                   <div><i onclick="newsDetails('${datum._id}')" class="fa-solid fa-arrow-right"></i></div>
+                   <div><i onclick="newsDetails('${datum._id}')" class="fa-solid fa-arrow-right" data-bs-toggle="modal" data-bs-target="#NewsModal"></i></div>
                 </div>
             </div>
         </div>
@@ -84,8 +83,19 @@ const newsDetails = async (id) => {
     const url = `https://openapi.programming-hero.com/api/news/${id}`;
     const res = await fetch(url);
     const news = await res.json();
-    console.log(news);
+    displayNewsDetails(news.data[0]);
 }
 
+const displayNewsDetails = async (news) => {
+    console.log(news)
+    const newsTitle = document.getElementById('newsModalLabel');
+    newsTitle.innerText = news.title;
+
+    const newsDetails = document.getElementById('newsDetails')
+    newsDetails.innerHTML = `
+    <img class="w-25" src="${news.image_url}"></ alt="">
+    <p>${news.details.slice(0,500)}...</p>
+    `
+}
 
 loadCategory();
