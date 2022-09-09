@@ -34,9 +34,57 @@ const loadNews = async(category_id) => {
 }
 
 const displayNews = async (data) => {
+    const newDiv = document.getElementById('news');
+    newDiv.innerHTML = ``
     data.forEach(datum => {
         console.log(datum)
+        
+    
+        const gridDiv = document.createElement('div');
+        gridDiv.classList.add('col-12')
+        gridDiv.classList.add('col-lg-12')
+        gridDiv.innerHTML = `
+        
+        <div class="news1 d-flex flex-lg-row flex-md-row flex-column border border-1 rounded-2 shadow">
+            <img class="w-25" src="${datum.image_url}"></ alt="">
+            <div class="course-text ms-2 d-flex flex-column justify-content-center p-4">
+                <h4 class="fw-semibold">${datum.title}</h4>
+                <p>${datum.details.slice(0,500)}...</p>
+                <div class="bottom d-flex justify-content-between" id="bottom">
+                   <div class="author d-flex">
+                    <img src="${datum.author.img}" style="width:20px ;height:30px" class="rounded mx-1" alt="">
+
+                    <div class="name d-flex flex-column">
+                        <p>${datum.author.name ? datum.author.name : "Data not found"}</p>
+                        <p>${datum.author.published_date}</p>
+                    </div>
+                   </div>
+                   <div class="icon d-flex justify-content-between">
+                    <div class="eye"><i class="fa-solid fa-eye"></i></div>
+                    <div class="view-text mx-1"><p>${datum.total_view ? datum.total_view : "Data not found"}</p></div>
+                   </div>
+                   <div class="rating">
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                   </div>
+                   <div><i onclick="newsDetails('${datum._id}')" class="fa-solid fa-arrow-right"></i></div>
+                </div>
+            </div>
+        </div>
+        `
+        newDiv.appendChild(gridDiv);
+        
     })
+}
+
+const newsDetails = async (id) => {
+    const url = `https://openapi.programming-hero.com/api/news/${id}`;
+    const res = await fetch(url);
+    const news = await res.json();
+    console.log(news);
 }
 
 
