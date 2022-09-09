@@ -25,7 +25,7 @@ const displayMenu = async (categories) => {
         <a onclick="loadNews('${category.category_id}')">${title}</a>  
        `;
         menuBar.appendChild(a)
-
+        
     })
 
     
@@ -35,7 +35,8 @@ const loadNews = async(category_id) => {
     const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
     try {
         const res = await fetch(url)
-    const id =  await res.json()
+        const id = await res.json()
+        toggleSpinner(true);
     displayNews(id.data);
     }
     catch (err) {
@@ -90,7 +91,7 @@ const displayNews = async (data) => {
         </div>
         `
         newDiv.appendChild(gridDiv);
-        
+        toggleSpinner(false);
     })
 }
 
@@ -118,6 +119,16 @@ const displayNewsDetails = async (news) => {
     <img class="w-25" src="${news.image_url}"></ alt="">
     <p>${news.details.slice(0,500)}...</p>
     `
+}
+
+const toggleSpinner = isLoading => {
+    const loaderSection = document.getElementById('loader');
+    if (isLoading) {
+        loaderSection.classList.remove('d-none')
+    }
+    else {
+        loaderSection.classList.add('d-none')
+    }
 }
 
 loadCategory();
