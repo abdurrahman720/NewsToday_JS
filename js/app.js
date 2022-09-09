@@ -11,7 +11,8 @@ const displayMenu = async (categories) => {
 
     categories.forEach(category => {
         const title = category.category_name;
-        console.log(category.category_id)
+        //console.log(category.category_id)
+        
         const a = document.createElement('a');
         a.classList.add('nav-link')
         a.classList.add('mx-4')
@@ -30,10 +31,14 @@ const loadNews = async(category_id) => {
     const res = await fetch(url)
     const id =  await res.json()
     displayNews(id.data);
-    
 }
 
 const displayNews = async (data) => {
+    const info = document.getElementById('itemFound');
+    info.innerHTML = `
+        ${data.length} items found in this category
+    `
+    
     const newDiv = document.getElementById('news');
     newDiv.innerHTML = ``
     data.forEach(datum => {
@@ -79,6 +84,8 @@ const displayNews = async (data) => {
     })
 }
 
+
+
 const newsDetails = async (id) => {
     const url = `https://openapi.programming-hero.com/api/news/${id}`;
     const res = await fetch(url);
@@ -99,3 +106,4 @@ const displayNewsDetails = async (news) => {
 }
 
 loadCategory();
+loadNews('08');
